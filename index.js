@@ -18,9 +18,7 @@ app.get("/", (req,res)=>{
 //signup route post request
 app.post("/signup", async (req,res) =>{
 
-    try{
-
-        
+    try{ 
         const user = await new UserModel(req.body)
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password,salt)
@@ -75,14 +73,15 @@ app.post('/login', async(req,res)=>{
          if(validPassword){
 
             const token =  jwt.sign(
-                { user_id: userDetail._id},
+                { user_id: userDetail._id },
                 "thisisthesecreat",
                 {
                     expiresIn:"10h"
                 }
-                 
-                 )
+            )
                 
+              
+
              console.log("user logged in succesfully")
              res.status(200).json({
                  message:"user logged in succesfully",
@@ -108,7 +107,7 @@ app.post('/login', async(req,res)=>{
 // get the user data using jwt token 
 app.get('/getuser', async(req,res)=>{
     
-    const token = req.header('token-auth')
+    const token = req.header('auth-token')
     if(!token){
         res.status(401).json({
             message:"Token is needed for this route to work"
@@ -134,6 +133,7 @@ app.get('/getuser', async(req,res)=>{
     
    
 })
+
 
 
 
